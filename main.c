@@ -7,12 +7,7 @@
 int main() {
     digital_pin_mode(9, OUTPUT);
     while (1) {
-        if (digital_read(4) == true) {
-            digital_write(3, true);
-        }
-        else {
-            digital_write(3, false);
-        }
+        digital_write(9, true);
     }
     return 0;
 }
