@@ -91,3 +91,29 @@ bool digital_read(uint8_t pin) {
         return false;
     }
 }
+
+void PWM_init() {
+    unsigned char duty;
+    TCCR0 = (1<<WGM00) | (1<<WGM10) | (1<<COM01) | (1<<CS00);
+    DDRB |= (1<<PB3);
+    while (1) {
+        for(duty = 0; duty<255; duty++) {
+            OCR0 = duty;
+            _delay_ms(8);
+        }
+        for(duty= 255; duty > 1; duty--) {
+            OCR0 = duty;
+            _delay_ms(8);
+        }
+    }
+}
+
+bool analog_write(uint8_t pin, int val) {
+    volatile uint8_t *port;
+    uint8_t bit = digital_pin_to_bit(pin);
+    port = digital_port_offset(digital_pin_to_port(pin), PORT);
+    
+    uint8_t dutycycle = val/255;
+
+    
+}
