@@ -10,3 +10,7 @@ void servo_init() {
 
     ICR1 = 40000;
 }
+
+void servo_set(uint16_t value) {
+    OCR1A = value;
+}
