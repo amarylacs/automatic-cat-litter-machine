@@ -2,6 +2,7 @@
 #define SERVO_H
 
 #include <avr/io.h>
+#include "servo.c"
 
 void servo_init();
 void servo_set(uint16_t value);
