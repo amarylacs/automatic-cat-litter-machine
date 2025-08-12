@@ -1,57 +1,114 @@
 #include <avr/io.h>
 #include <stdbool.h>
 #include <stddef.h>
-#include "functions.h"
+#include "Ultrasonic.h"
 #include <util/delay.h>
+#include "stepper.h"
+#include "servo.h"
+#include "digital.h"
 
-int main() {
+enum {
+  IDLE,
+  CAT,
+  REWARD,
+  TURN
+};
 
-    TCCR0B |= (1 << CS01) | (1 << CS00);
-    TIMSK0 |= (1 << TOIE0);
-    sei();
+int main(){
+  stepper_init();
+  uint8_t current_state = IDLE;
+  uint8_t new_state;
 
-    while (1) {
-        digital_write(9, true);
-        PWM_init();
-        uint32_t val;
-        val = micros();
+  pinMode(13, OUTPUT);
+  pinMode(12, OUTPUT);
+  pinMode(11, OUTPUT);
+  pinMode(10, OUTPUT);
+
+  while(1){
+    switch(current_state) {
+      case IDLE: {
+        new_state = STATE_IDLE();
+        break;
+      }
+      case CAT: {
+        new_state = STATE_CAT();
+        _delay_ms(1000);
+
+        break;
+      }
+      case REWARD: {
+        new_state = STATE_REWARD();
+        _delay_ms(1000);
+
+        break;
+      }
+      case TURN: { 
+        new_state = STATE_TURN();
+        _delay_ms(1000);
+
+        break;
+      }
     }
-}#include "digital.h"
-#include <avr/interrupt.h>
-
-volatile unsigned long timer0_millis = 0;
-
-unsigned long micros() {
-  unsigned long m;
-  uint8_t oldSREG = SREG;
-  cli(); 
-  m = timer0_millis;
-  if (TCNT0 != 0) {
-    m = (m << 8) + TCNT0;
+    current_state = new_state;
   }
-  else if (TCNT1L != 0) {
-    m = (m << 8) + TCNT1L;
+}
+
+int STATE_IDLE(void) {
+  float distance = ultrasonic_distance();
+  digitalWrite(12,1);
+  digitalWrite(13,0);
+  digitalWrite(10,0);
+  digitalWrite(11,0);
+  if (distance > 0 && distance < 0.25) {
+    return CAT;
   }
-  SREG = oldSREG;
-  return m * 4;
-}
- 
-ISR(TIMER0_OVF_vect) {
-  timer0_millis++;
+  return IDLE;
 }
 
-int main() {
-  TCCR0B |= (1 << CS01) | (1 << CS00);
-  TIMSK0 |= (1 << TOIE0);
-  sei();
+int STATE_CAT(void) {
+  float distance = ultrasonic_distance();
+  digitalWrite(12,0);
+  digitalWrite(13,1);
+  digitalWrite(10,0);
+  digitalWrite(11,0);
 
-    while (1) {
-        uint32_t val;
-        val = micros();
-    }
-    return 0;
+  if (distance > 0 && distance < 0.25) {
+    return CAT;
+  }
+  else {
+    return REWARD;
+  }
 }
 
+int STATE_REWARD(void) {
+  digitalWrite(12,0);
+  digitalWrite(13,0);
+  digitalWrite(10,1);
+  digitalWrite(11,0);
 
+  servo_init();
+  servo_set(4000);
+  _delay_ms(1000);
+  servo_set(2000);
+  _delay_ms(1000);
+  return TURN;
+}
 
-//this is main.c
+int STATE_TURN(void) {
+
+  digitalWrite(12,0);
+  digitalWrite(13,0);
+  digitalWrite(10,0);
+  digitalWrite(11,1);
+
+  stepper_direction(true);
+  stepper_set(90);
+  _delay_ms(1500);
+  stepper_set(110);
+  _delay_ms(1500);
+
+  stepper_direction(false);
+  stepper_set(200);
+
+  return IDLE;
+}
