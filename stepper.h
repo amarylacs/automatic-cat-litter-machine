@@ -4,6 +4,7 @@
 #include <util/delay.h>
 #include <avr/io.h>
 #include <stdbool.h>
+#include "stepper.c"
 
 #define F_CPU 16000000UL
 
