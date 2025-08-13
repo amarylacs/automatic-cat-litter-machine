@@ -1,7 +1,5 @@
 # Automatic Litter Machine: an AVR Microcontroller Project
 
-## Sarah + Jules's Final Project for **Cooper Summer STEM 2025: Embedded Systems - "C-ing" Beyond Arduino** </center>
-
 **COMPONENTS USED** <br>
 1. [Arduino UNO](https://store.arduino.cc/products/arduino-uno-rev3?srsltid=AfmBOooWxfYksbrnpxJ56QNHZb88aM7nWwNi5SpqYSKcoIqDoYj02ZtT) (Atmega328p)
 2. [Nema 17 Stepper Motor](https://www.amazon.com/dp/B0D22GZFPC?ref=cm_sw_r_cso_cp_apin_dp_BYX91VSJR7T6RXQS5W7V&ref_=cm_sw_r_cso_cp_apin_dp_BYX91VSJR7T6RXQS5W7V&social_share=cm_sw_r_cso_cp_apin_dp_BYX91VSJR7T6RXQS5W7V&csmig=1&th=1)
