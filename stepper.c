@@ -43,5 +43,6 @@ void stepper_set(float angle) {
         }
         stepper_move_one_step();
         digitalWrite(13,0);
+        distance = ultrasonic_distance();
     }
 }
