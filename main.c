@@ -101,13 +101,13 @@ int STATE_TURN(void) {
   digitalWrite(10,0);
   digitalWrite(11,1);
 
-  stepper_direction(true);
+  stepper_direction(false);
   stepper_set(90);
   _delay_ms(1500);
   stepper_set(110);
   _delay_ms(1500);
 
-  stepper_direction(false);
+  stepper_direction(true);
   stepper_set(200);
 
   return IDLE;
