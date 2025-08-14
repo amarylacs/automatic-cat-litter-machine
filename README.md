@@ -11,6 +11,7 @@
 8. 2-Leg LEDs + Resistors
 9. Jumper wires + Breadboard
 
-*OPTIONAL COMPONENTS FOR DEBUGGING*
+*OPTIONAL COMPONENTS*
 1. Arduino UNO with debugWire enabled
 2. Oscilloscope + probes
+3. [Mini Chamber (TinkerCAD)](https://www.tinkercad.com/things/e9Y2mn8hWAs-cat-litter-box?sharecode=fZwKLyQ44wH8K7AmOvCO8VlpgxPifE_Do4EalsedpHA)
